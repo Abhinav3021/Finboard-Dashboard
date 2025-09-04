@@ -45,7 +45,7 @@ export default function AddWidgetForm() {
     );
   };
 
-  const renderFields = (data: any, parentKey = ''): JSX.Element[] => {
+  const renderFields = (data: any, parentKey = ''): React.ReactNode[] => {
     // Check if the data is an array
     if (Array.isArray(data) && data.length > 0) {
       // Process the first object in the array to get the fields
