@@ -6,11 +6,11 @@ import { useDashboardStore } from '@/store/dashboardStore';
 import { Button } from '@/components/ui/button';
 
 export default function DashboardBackup() {
-  const { widgets, layout } = useDashboardStore();
+  const { widgets } = useDashboardStore();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleExport = () => {
-    const config = { widgets, layout };
+    const config = { widgets };
     const blob = new Blob([JSON.stringify(config, null, 2)], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');

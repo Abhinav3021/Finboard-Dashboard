@@ -1,7 +1,6 @@
-// src/components/dashboard/EditWidgetDialog.tsx
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, FormEvent, useCallback } from 'react';
 import { useDashboardStore } from '@/store/dashboardStore';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -10,7 +9,6 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { DialogClose, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Checkbox } from '@/components/ui/checkbox';
 import { fetchFinancialData } from '@/lib/api/financialApi';
-import { get } from 'lodash';
 
 interface EditWidgetDialogProps {
   widgetId: string;
@@ -23,20 +21,15 @@ export default function EditWidgetDialog({ widgetId }: EditWidgetDialogProps) {
   const [apiResponse, setApiResponse] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [selectedFields, setSelectedFields] = useState<string[]>(widget?.selectedFields || []);
+  
   const [name, setName] = useState(widget?.name || '');
   const [apiUrl, setApiUrl] = useState(widget?.apiUrl || '');
-  const [displayMode, setDisplayMode] = useState(widget?.displayMode || 'card');
+  const [displayMode, setDisplayMode] = useState<'card' | 'table' | 'chart'>(widget?.displayMode || 'card');
   const [refreshInterval, setRefreshInterval] = useState(widget?.refreshInterval || 30);
+  const [selectedFields, setSelectedFields] = useState<string[]>(widget?.selectedFields || []);
 
-  useEffect(() => {
-    if (apiUrl) {
-      handleTestApi(new Event('load')); // Load API data for editing
-    }
-  }, [apiUrl]);
-
-  const handleTestApi = async (e: Event | React.MouseEvent) => {
-    e.preventDefault();
+  const handleTestApi = useCallback(async (e?: React.MouseEvent) => {
+    e?.preventDefault();
     setIsLoading(true);
     setError(null);
     setApiResponse(null);
@@ -51,7 +44,13 @@ export default function EditWidgetDialog({ widgetId }: EditWidgetDialogProps) {
     } finally {
       setIsLoading(false);
     }
-  };
+  }, [apiUrl, setSelectedFields, setApiResponse, setError, setIsLoading]);
+
+  useEffect(() => {
+    if (apiUrl) {
+      handleTestApi();
+    }
+  }, [apiUrl, handleTestApi]);
 
   const handleFieldChange = (key: string, isChecked: boolean) => {
     setSelectedFields(prev =>
@@ -59,7 +58,7 @@ export default function EditWidgetDialog({ widgetId }: EditWidgetDialogProps) {
     );
   };
 
-  const renderFields = (data: any, parentKey = ''): JSX.Element[] => {
+  const renderFields = (data: any, parentKey = ''): React.ReactNode[] => {
     if (Array.isArray(data) && data.length > 0) {
       return renderFields(data[0]);
     }
@@ -88,7 +87,7 @@ export default function EditWidgetDialog({ widgetId }: EditWidgetDialogProps) {
     });
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (widgetId && apiUrl) {
       updateWidget(widgetId, {
@@ -135,11 +134,11 @@ export default function EditWidgetDialog({ widgetId }: EditWidgetDialogProps) {
         )}
         <div>
           <Label htmlFor="refreshInterval">Refresh Interval (seconds)</Label>
-          <Input id="refreshInterval" name="refreshInterval" type="number" defaultValue={30} required value={refreshInterval} onChange={(e) => setRefreshInterval(parseInt(e.target.value, 10))} />
+          <Input id="refreshInterval" name="refreshInterval" type="number" required value={refreshInterval} onChange={(e) => setRefreshInterval(parseInt(e.target.value, 10))} />
         </div>
         <div>
           <Label>Display Mode</Label>
-          <RadioGroup value={displayMode} onValueChange={setDisplayMode}>
+          <RadioGroup value={displayMode} onValueChange={(val: 'card' | 'table' | 'chart') => setDisplayMode(val)}>
             <div className="flex items-center space-x-2"><RadioGroupItem value="card" id="card" /><Label htmlFor="card">Card</Label></div>
             <div className="flex items-center space-x-2"><RadioGroupItem value="table" id="table" /><Label htmlFor="table">Table</Label></div>
             <div className="flex items-center space-x-2"><RadioGroupItem value="chart" id="chart" /><Label htmlFor="chart">Chart</Label></div>

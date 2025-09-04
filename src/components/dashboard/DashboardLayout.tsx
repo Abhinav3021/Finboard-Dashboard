@@ -59,7 +59,7 @@ export default function DashboardLayout() {
           ))}
         </ResponsiveGridLayout>
       ) : (
-        <p className="text-center text-gray-500">No widgets added yet. Click the "+" button to get started.</p>
+        <p className="text-center text-gray-500">No widgets added yet. Click the &quot;+&quot; button to get started.</p>
       )}
     </div>
   );

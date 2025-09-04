@@ -1,4 +1,3 @@
-// src/store/dashboardStore.ts
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import { Layout } from 'react-grid-layout';
@@ -18,11 +17,12 @@ interface DashboardState {
   addWidget: (widget: Omit<Widget, 'id' | 'layout'> & Partial<Widget>) => void;
   removeWidget: (id: string) => void;
   updateLayout: (newLayout: Layout[]) => void;
+  updateWidget: (id: string, updatedFields: Partial<Widget>) => void;
 }
 
 export const useDashboardStore = create<DashboardState>()(
   persist(
-    (set, get) => ({
+    (set) => ({
       widgets: [],
       addWidget: (widget) =>
         set((state) => {
@@ -55,6 +55,14 @@ export const useDashboardStore = create<DashboardState>()(
             }
             return widget;
           });
+          return { widgets: updatedWidgets };
+        });
+      },
+      updateWidget: (id, updatedFields) => {
+        set((state) => {
+          const updatedWidgets = state.widgets.map((widget) =>
+            widget.id === id ? { ...widget, ...updatedFields } : widget
+          );
           return { widgets: updatedWidgets };
         });
       },
