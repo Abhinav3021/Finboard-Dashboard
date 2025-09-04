@@ -47,10 +47,16 @@ export default function Widget({ widget, onRemove }: WidgetProps) {
     <Card className="h-full relative flex flex-col">
       <CardHeader className="flex flex-row items-center justify-between pb-2">
         <CardTitle className="text-sm font-medium truncate">{widget.name}</CardTitle>
-        <div className="flex space-x-1">
+        <div className="flex space-x-1"
+        onMouseDown={(e) => e.stopPropagation()} >
           <Dialog>
             <DialogTrigger asChild>
-              <Button variant="ghost" size="icon" className="h-6 w-6">
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                className="h-6 w-6 cursor-pointer"
+                onMouseDown={(e) => e.stopPropagation()}
+              >
                 <Settings className="h-4 w-4" />
               </Button>
             </DialogTrigger>
@@ -59,9 +65,11 @@ export default function Widget({ widget, onRemove }: WidgetProps) {
           <Button
             variant="ghost"
             size="icon"
-            className="h-6 w-6"
+            className="h-6 w-6 cursor-pointer"
             onClick={(e) => {
-              e.stopPropagation();
+              e.preventDefault();       // stop default button behavior
+              e.stopPropagation();      // stop click bubbling
+              e.nativeEvent.stopImmediatePropagation?.(); // stop drag event from firing
               onRemove();
             }}
           >

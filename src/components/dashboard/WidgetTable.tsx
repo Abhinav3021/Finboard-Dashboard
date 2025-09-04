@@ -1,39 +1,43 @@
-// src/components/dashboard/WidgetChart.tsx
+// src/components/dashboard/WidgetTable.tsx
 import React from 'react';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Skeleton } from '@/components/ui/skeleton';
 import { get } from 'lodash';
 
-interface WidgetChartProps {
+interface WidgetTableProps {
   data: any;
   selectedFields: string[];
   isLoading: boolean;
 }
 
-export default function WidgetChart({ data, selectedFields, isLoading }: WidgetChartProps) {
+export default function WidgetTable({ data, selectedFields, isLoading }: WidgetTableProps) {
   if (isLoading) {
     return <Skeleton className="h-full w-full" />;
   }
 
-  const chartData = Array.isArray(data) ? data : [];
-  const yAxisKey = selectedFields.length > 0 ? selectedFields[0] : null;
-
-  if (!yAxisKey) {
-    return <div className="p-4 text-center text-gray-500">Please select at least one field for the chart.</div>;
-  }
+  // Ensure data is an array
+  const tableData = Array.isArray(data) ? data : [];
 
   return (
-    <ResponsiveContainer width="100%" height="100%">
-      <LineChart
-        data={chartData.slice().reverse()} // Reverse to show oldest data on the left
-        margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-      >
-        <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="date" />
-        <YAxis />
-        <Tooltip />
-        <Line type="monotone" dataKey={yAxisKey} stroke="#8884d8" activeDot={{ r: 8 }} />
-      </LineChart>
-    </ResponsiveContainer>
+    <div className="overflow-auto max-h-full">
+      <Table>
+        <TableHeader>
+          <TableRow>
+            {selectedFields.map(field => (
+              <TableHead key={field}>{field}</TableHead>
+            ))}
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {tableData.map((item, index) => (
+            <TableRow key={index}>
+              {selectedFields.map(field => (
+                <TableCell key={field}>{get(item, field, 'N/A')}</TableCell>
+              ))}
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </div>
   );
 }

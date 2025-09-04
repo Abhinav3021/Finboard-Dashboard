@@ -21,7 +21,7 @@ export const useFinancialData = (apiUrl: string, interval: number): FinancialDat
         setData(result);
         setError(null);
       } catch (err) {
-        setError('Failed to fetch data.');
+        setError('Failed to fetch data, API limit reached');
         console.error(err);
       } finally {
         setIsLoading(false);

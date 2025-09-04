@@ -43,10 +43,10 @@ export default function DashboardBackup() {
 
   return (
     <div className="flex gap-2">
-      <Button onClick={handleExport} variant="outline">
+      <Button onClick={handleExport} className="bg-green-600 text-white hover:bg-green-700">
         Export Config
       </Button>
-      <Button onClick={() => fileInputRef.current?.click()} variant="outline">
+      <Button onClick={() => fileInputRef.current?.click()} className="bg-green-600 text-white hover:bg-green-700">
         Import Config
       </Button>
       <input

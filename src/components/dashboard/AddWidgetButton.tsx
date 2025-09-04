@@ -10,8 +10,8 @@ export default function AddWidgetButton() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline" size="icon" className="h-10 w-10">
-          <Plus className="h-4 w-4" />
+        <Button variant="outline" className='p-2'>
+          Add New <Plus className="h-4 w-4" />
         </Button>
       </DialogTrigger>
       <DialogContent>

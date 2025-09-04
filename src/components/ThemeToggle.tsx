@@ -22,7 +22,7 @@ export default function ThemeToggle() {
 
   return (
     <Button variant="outline" size="icon" onClick={toggleTheme}>
-      {theme === 'light' ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+      {theme === 'light' ? <Sun className="h-4 w-4 bg-amber-300" /> : <Moon className="h-4 w-4 bg-amber-50 text-black" />}
     </Button>
   );
 }

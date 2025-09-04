@@ -1,106 +1,174 @@
-FinBoard: A Customizable Finance Dashboard
-FinBoard is a customizable finance dashboard that empowers users to build their own real-time finance monitoring solution. By connecting to various financial APIs, users can fetch and visualize real-time data through a dynamic and personalized widget system.
 
-🚀 Key Features
-Real-time Data Fetching: Fetches data from financial APIs with a configurable refresh interval.
 
-Dynamic Widget Management: Users can add, edit, and remove widgets on the dashboard.
 
-Drag-and-Drop Layout: Widgets can be freely rearranged and resized using a responsive grid layout.
+# 📊 FinBoard: A Customizable Finance Dashboard
 
-Data Persistence: The entire dashboard layout and widget configurations are saved in local storage, preserving them across sessions.
+FinBoard is a customizable **real-time finance dashboard** that empowers users to build their own monitoring solution.  
+By connecting to various financial APIs, users can fetch and visualize data through dynamic, drag-and-drop widgets with multiple display modes.
 
-Multiple Display Modes: Data can be displayed as a simple card, a detailed table, or a line chart for historical trends.
+---
 
-API Flexibility: The application is designed to work with various APIs, including Alpha Vantage and Financial Modeling Prep (FMP), by dynamically parsing their JSON responses.
+## 🚀 Features
 
-Theming: Includes a toggleable light and dark theme with a navy blue color scheme.
+### 🔧 Widget Management
+- **Add Widgets**: Connect to any financial API and create widgets.
+- **Display Modes**:  
+  - **Card View** → Key financial metrics at a glance  
+  - **Table View** → Detailed tabular data with filters  
+  - **Chart View** → Interactive line charts for historical trends
+- **Edit Widgets**: Update API URL, fields, refresh interval, or display mode.
+- **Remove Widgets**: Delete unwanted widgets easily.
+- **Drag & Drop Layout**: Rearrange and resize widgets with `react-grid-layout`.
 
-⚙️ Technology Stack
-Frontend: Next.js 14
+### 🔄 Real-time Data Fetching
+- Connects to APIs like **Alpha Vantage**, **Financial Modeling Prep (FMP)**, or **Twelve Data**.
+- Configurable refresh interval per widget.
+- Intelligent handling of loading, error, and empty states.
 
-Styling: Tailwind CSS
+### 💾 Data Persistence
+- Widgets and layout configurations are **persisted in localStorage** with Zustand.
+- Full state recovery on page refresh or browser restart.
+- **Export & Import** functionality for backing up dashboard configurations.
 
-UI Components: Shadcn UI
+### 🎨 Theming
+- **Light & Dark Mode** with a modern **navy blue theme**.
+- Toggle button (🌙/☀️) for seamless switching.
+- CSS variables for maintainable color palettes.
 
-State Management: Zustand with persist middleware for data persistence.
+### 📱 Responsive UI/UX
+- Fully responsive grid layout for desktop and mobile.
+- Intuitive interactions for both technical and non-technical users.
 
-Data Visualization: recharts for charts.
+---
 
-Layout: react-grid-layout for drag-and-drop functionality.
+## ⚙️ Technology Stack
 
-📂 Project Structure
-The project follows a standard Next.js app router structure.
+- **Framework**: [Next.js 14](https://nextjs.org/) (App Router)
+- **Styling**: [Tailwind CSS](https://tailwindcss.com/)
+- **UI Components**: [shadcn/ui](https://ui.shadcn.com/)
+- **State Management**: [Zustand](https://zustand-demo.pmnd.rs/) with persist middleware
+- **Data Visualization**: [Recharts](https://recharts.org/)
+- **Layout System**: [react-grid-layout](https://github.com/react-grid-layout/react-grid-layout)
 
+---
+
+## 📂 Project Structure
+
+```bash
 /finboard
 ├── app/
-│   ├── layout.tsx             # Root layout and theme provider
+│   ├── layout.tsx             # Root layout with ThemeProvider
 │   └── page.tsx               # Main dashboard page
 ├── components/
 │   └── dashboard/
-│       ├── AddWidgetDialog.tsx  # Form for adding new widgets
-│       ├── DashboardLayout.tsx  # The main grid layout and widget container
-│       ├── EditWidgetDialog.tsx   # Form for editing existing widgets
-│       ├── Widget.tsx           # The container for a single widget
-│       ├── WidgetCard.tsx       # Renders data in a card format
-│       ├── WidgetChart.tsx      # Renders a line chart
-│       └── WidgetTable.tsx      # Renders data in a table format
+│       ├── AddWidgetDialog.tsx   # Dialog for adding new widgets
+│       ├── AddWidgetForm.tsx     # Form for widget creation
+│       ├── DashboardLayout.tsx   # Drag-and-drop grid layout
+│       ├── EditWidgetDialog.tsx  # Dialog for editing widgets
+│       ├── Widget.tsx            # Widget container with controls
+│       ├── WidgetCard.tsx        # Card display mode
+│       ├── WidgetTable.tsx       # Table display mode
+│       └── WidgetChart.tsx       # Chart display mode
 ├── lib/
+│   ├── api/
+│   │   └── financialApi.ts       # API service for fetching data
 │   └── hooks/
-│       └── useFinancialData.ts  # Custom hook for real-time data fetching
-│   └── api/
-│       └── financialApi.ts      # API service for fetching data
+│       └── useFinancialData.ts   # Custom hook for live API fetching
 ├── store/
-│   └── dashboardStore.ts      # Zustand store for global state management
-└── tailwind.config.ts         # Tailwind CSS configuration
+│   └── dashboardStore.ts         # Zustand store for widgets & layout
+├── styles/
+│   └── globals.css               # Theme variables and Tailwind base
+└── tailwind.config.ts            # Tailwind CSS configuration
+````
 
-🛠️ Installation and Setup
-Clone the repository:
+---
 
-git clone [repository-url]
-cd finboard
+## 🛠️ Installation & Setup
 
-Install dependencies:
+1. **Clone the Repository**
 
-npm install
+   ```bash
+   git clone [repository-url]
+   cd finboard
+   ```
 
-Get an API Key:
+2. **Install Dependencies**
 
-Sign up for a free API key from a service like Financial Modeling Prep or Twelve Data.
+   ```bash
+   npm install
+   ```
 
-FMP's documentation: https://financialmodelingprep.com/developer/docs/
+3. **Get an API Key**
 
-Run the development server:
+   * Sign up at [Financial Modeling Prep](https://financialmodelingprep.com/developer/docs/) or [Alpha Vantage](https://www.alphavantage.co/documentation/).
+   * Replace the placeholder `YOUR_API_KEY` in your API URLs.
 
-npm run dev
+4. **Run the Development Server**
 
-Open your browser and navigate to http://localhost:3000.
+   ```bash
+   npm run dev
+   ```
 
-📝 Usage
-Adding a Widget
-Click the "+" button in the top right corner.
+   Open your browser → [http://localhost:3000](http://localhost:3000)
 
-Enter a name for your widget.
+---
 
-Paste a valid API URL into the input field (e.g., https://financialmodelingprep.com/api/v3/historical-price-full/AAPL?apikey=YOUR_API_KEY).
+## 📝 Usage Guide
 
-Click "Test API" to fetch the response and view the available data fields.
+### ➕ Adding a Widget
 
-Select the data fields you want to display by checking the checkboxes.
+1. Click the **“+”** button in the dashboard header.
+2. Enter a widget name.
+3. Paste a valid API URL (e.g.,
 
-Choose a display mode (Card, Table, or Chart).
+   ```
+   https://financialmodelingprep.com/api/v3/historical-price-full/AAPL?apikey=YOUR_API_KEY
+   ```
 
-Click "Add Widget".
+   )
+4. Click **Test API** → preview fields.
+5. Select desired fields.
+6. Choose a display mode (**Card**, **Table**, or **Chart**).
+7. Click **“Add Widget”**.
 
-Managing Widgets
-Drag and Drop: Click and hold a widget's header to drag it to a new position.
+### ⚙️ Managing Widgets
 
-Resize: Drag the bottom-right corner of a widget to change its size.
+* **Drag & Drop** → Reorder widgets anywhere on the grid.
+* **Resize** → Adjust widget dimensions by dragging the bottom-right corner.
+* **Edit** → Click ⚙️ to open the edit dialog.
+* **Remove** → Click ❌ to delete the widget.
 
-Edit: Click the Settings (⚙️) icon to open the edit dialog and modify the widget's name, API URL, or display mode.
+### 🎨 Theming
 
-Remove: Click the X icon to delete a widget from the dashboard.
+* Use the **Theme Toggle** (🌙/☀️) in the header.
+* Theme preference is saved automatically in localStorage.
 
-💡 Customization
-Theming
-To switch between light and dark modes, click the Sun or Moon icon in the header. The theme preference is saved in your browser's local storage.
+---
+
+## 📌 API Notes
+
+* APIs have **rate limits** (e.g., 5 calls/minute on free plans).
+* Use caching or increase the refresh interval to avoid `429 Too Many Requests` errors.
+* Example APIs:
+
+  * [Alpha Vantage](https://www.alphavantage.co/documentation/)
+  * [Financial Modeling Prep](https://financialmodelingprep.com/developer/docs/)
+
+---
+
+## 📈 Future Enhancements
+
+* Real-time updates via WebSockets (instead of polling).
+* Pre-built **dashboard templates** for quick setup.
+* Advanced formatting for currency, percentage, and multi-API integration.
+
+---
+
+## 🤝 Contributing
+
+1. Fork the repo
+2. Create a new branch
+3. Commit changes
+4. Submit a pull request
+
+

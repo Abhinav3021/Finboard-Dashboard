@@ -50,12 +50,12 @@ export default function DashboardLayout() {
           isResizable={true}
         >
           {widgets.map((widget) => (
-            <div key={widget.id}>
-              <Widget
-                widget={widget}
-                onRemove={() => removeWidget(widget.id)}
-              />
-            </div>
+          <div key={widget.id} data-grid={widget.layout}>
+          <Widget
+          widget={widget}
+          onRemove={() => removeWidget(widget.id)}
+            />
+        </div>
           ))}
         </ResponsiveGridLayout>
       ) : (

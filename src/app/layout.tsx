@@ -1,12 +1,17 @@
 // src/app/layout.tsx
 import './globals.css';
 import { Inter } from 'next/font/google';
+import { ThemeProvider } from 'next-themes';
 
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata = {
   title: 'FinBoard',
   description: 'Your personal finance dashboard.',
+    icons: {
+    icon: '/SalesDashboard.png'
+  },
+
 };
 
 export default function RootLayout({
@@ -15,9 +20,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" suppressHydrationWarning={true}>
+    <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
-        {children}
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );
